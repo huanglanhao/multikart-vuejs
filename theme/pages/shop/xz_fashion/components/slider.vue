@@ -55,22 +55,14 @@ export default {
           prevEl: ".swiper-button-prev"
         }
       },
-      // indexImgs: [
-      //   {
-      //     imagepath: require('@/assets/images/home-banner/1-1.png'),
-      //     title: '10代超薄游戏本',
-      //     subtitle: '轻薄便携',
-      //     describetitle: '144GHz屏 畅玩电竞游戏',
-      //     alignclass: 'p-left'
-      //   },
-      // ]
+      // indexImgs: []
     };
   },
   computed: {
     ...mapState(["indexImgs"])
   },
   watch: {
-  
+  ...mapState(["indexImgs"])
   },
 
   mounted() {

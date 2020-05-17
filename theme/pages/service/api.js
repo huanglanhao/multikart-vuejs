@@ -19,7 +19,8 @@ export function emailLogin(params) {
 }
 
 // 首页所有标签商品
-export function getHomeTagProdList() {
+export function getHomeTagProds() {
+  console.log(home_tag_prod_list,'---home_tag_prod_list')
   return request({
     method: 'get',
     url: home_tag_prod_list,

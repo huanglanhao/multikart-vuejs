@@ -46,12 +46,10 @@ export default function request(options = {}, files = false) {
   }
 
   Object.assign(options, myInit);
-  console.log(options, '----options')
 
   return new Promise((resolve, reject) => {
-    axios(options).then(data => {
-      console.log(data, '--------data')
-      resolve(data);
+    axios(options).then(res => {
+      resolve(res);
     }).catch(err => {
       reject(err)
     });

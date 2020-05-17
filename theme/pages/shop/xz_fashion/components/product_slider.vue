@@ -52,14 +52,14 @@
 <script>
 import productBox1 from "../../../../components/product-box/xz_product-box1";
 export default {
-  props: ["products"],
+  props: ["products",'title',],
   components: {
     productBox1
   },
   data() {
     return {
-      title: "热卖商品",
-      subtitle: "特价",
+      // title: "",
+      subtitle: "",
       showCart: false,
       showquickviewmodel: false,
       showcomapreModal: false,

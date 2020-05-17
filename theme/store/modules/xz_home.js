@@ -1,19 +1,13 @@
 
-import { getIndexImgs, getHomeTagProdList } from '../../pages/service/api'
+import { getIndexImgs, getHomeTagProds } from '../../pages/service/api'
+import Vue from 'vue'
 
 export default {
   namespaced: true,
 
   state: {
-    indexImgs: [
-      {
-        imagepath: require('@/assets/images/home-banner/1-1.png'),
-        title: '10代超薄游戏本',
-        subtitle: '轻薄便携',
-        describetitle: '144GHz屏 畅玩电竞游戏',
-        alignclass: 'p-left'
-      },
-    ],// 轮播图
+    indexImgs: [],// 轮播图
+    tagProdList: [] // 分类商品列表
   },
   actions: {
 
@@ -36,20 +30,55 @@ export default {
         })
       })
 
-      console.log(indexImgs,'----getIndexImgList-----')
-
-      context.commit('save', {indexImgs});
+      context.commit('save', { indexImgs });
     },
     // 获取首页所有标签商品
+    async  getHomeTagProdList(context, payload) {
+      console.log('getHomeTagProdList')
+      const { data } = await getHomeTagProds()
+      console.log(data, '------------------getHomeTagProdList')
+
+      const is_true = !(data && typeof data == 'object' && Array.isArray(data))
+      if (is_true) {
+        return
+      }
+
+      const tagProdList = data.map(item => {
+
+        const productDtoList = item.productDtoList.map(pitme => {
+          return {
+            id: pitme.prodId,
+            title: pitme.prodName,
+            description: pitme.brief,
+            oriPrice: pitme.oriPrice,
+            price: pitme.price,
+            // sale: true,
+            pic: 'pro3/39.jpg' || pitme.pic,
+          }
+        })
+
+        console.log(productDtoList, '------productDtoList')
+
+        return {
+          id: item.di,
+          title: item.title,
+          seq: item.seq,
+          style: item.style,
+          productDtoList
+        }
+      })
+
+      context.commit('save', { tagProdList });
+    },
   },
   mutations: {
 
     save(state, payload) {
-      state= {
-        ...state,
-        ...payload
+
+      for (let [keys, value] of Object.entries(payload)) {
+        state[`${keys}`] = value
       }
-      console.log(state,'----state')
+      // state.indexImgs=payload.indexImgs
     }
   },
 };

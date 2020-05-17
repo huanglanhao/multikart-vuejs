@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <Breadcrumbs :title="getDetail.title" />
+    <!-- <Breadcrumbs :title="getDetail.title" /> -->
     <section class="section-b-space">
       <div class="collection-wrapper">
         <div class="container">
