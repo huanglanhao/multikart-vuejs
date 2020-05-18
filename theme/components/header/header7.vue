@@ -10,7 +10,7 @@
             <div class="main-menu">
               <div class="menu-left">
                 <div class="brand-logo">
-                  <nuxt-link :to="{ path: '/shop/fashion'}">
+                  <nuxt-link :to="{ path: '/shop/xz_fashion'}">
                     <img :src='"@/assets/images/gym/logo.png"' class="img-fluid" alt="logo" />
                   </nuxt-link>
                 </div>
@@ -27,14 +27,14 @@
   </div>
 </template>
 <script>
-import TopBar from '../widgets/topbar'
-import Nav from '../widgets/navbar'
-import HeaderWidgets from '../widgets/header-widgets'
-export default {
-  components: {
-    TopBar,
-    Nav,
-    HeaderWidgets
+  import TopBar from '../widgets/topbar'
+  import Nav from '../widgets/navbar'
+  import HeaderWidgets from '../widgets/header-widgets'
+  export default {
+    components: {
+      TopBar,
+      Nav,
+      HeaderWidgets
+    }
   }
-}
 </script>

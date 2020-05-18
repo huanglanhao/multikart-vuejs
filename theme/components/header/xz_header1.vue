@@ -2,7 +2,7 @@
   <div>
     <header>
       <div class="mobile-fix-option"></div>
-      <TopBar/>
+      <TopBar />
       <div class="container">
         <div class="row">
           <div class="col-sm-12">
@@ -16,15 +16,15 @@
                   </a>
                   <LeftSidebar :leftSidebarVal="leftSidebarVal" @closeVal="closeBarValFromChild" />
                 </div>
-                <!-- <div class="brand-logo">
-                  <nuxt-link :to="{ path: '/shop/fashion'}">
+                <div class="brand-logo">
+                  <nuxt-link :to="{ path: '/shop/xz_fashion'}">
                     <img :src='"@/assets/images/icon/logo.png"' class="img-fluid" alt />
                   </nuxt-link>
-                </div> -->
+                </div>
               </div>
               <div class="menu-right pull-right">
-                  <Nav/>
-                  <!-- <HeaderWidgets/> -->
+                <Nav />
+                <HeaderWidgets />
               </div>
             </div>
           </div>
@@ -34,29 +34,30 @@
   </div>
 </template>
 <script>
-import TopBar from '../widgets/topbar'
-import LeftSidebar from '../widgets/xz_left-sidebar'
-import Nav from '../widgets/xz_navbar'
-import HeaderWidgets from '../widgets/header-widgets'
-export default {
-  data() {
-    return {
-      leftSidebarVal: false
-    }
-  },
-  components: {
-    TopBar,
-    LeftSidebar,
-    Nav,
-    HeaderWidgets
-  },
-  methods: {
-    left_sidebar() {
-      this.leftSidebarVal = true
+  import TopBar from '../widgets/topbar'
+  import LeftSidebar from '../widgets/xz_left-sidebar'
+  import Nav from '../widgets/xz_navbar'
+  import HeaderWidgets from '../widgets/header-widgets'
+
+  export default {
+    data() {
+      return {
+        leftSidebarVal: false
+      }
     },
-    closeBarValFromChild(val) {
-      this.leftSidebarVal = val
+    components: {
+      TopBar,
+      LeftSidebar,
+      Nav,
+      HeaderWidgets
+    },
+    methods: {
+      left_sidebar() {
+        this.leftSidebarVal = true
+      },
+      closeBarValFromChild(val) {
+        this.leftSidebarVal = val
+      }
     }
   }
-}
 </script>

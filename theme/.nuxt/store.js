@@ -22,6 +22,7 @@ let store = {};
   resolveStoreModules(require('../store/modules/blog.js'), 'modules/blog.js')
   resolveStoreModules(require('../store/modules/cart.js'), 'modules/cart.js')
   resolveStoreModules(require('../store/modules/filter.js'), 'modules/filter.js')
+  resolveStoreModules(require('../store/modules/hlh_commodity.js'), 'modules/hlh_commodity.js')
   resolveStoreModules(require('../store/modules/layout.js'), 'modules/layout.js')
   resolveStoreModules(require('../store/modules/menu.js'), 'modules/menu.js')
   resolveStoreModules(require('../store/modules/products.js'), 'modules/products.js')
@@ -36,6 +37,7 @@ let store = {};
       '../store/modules/blog.js',
       '../store/modules/cart.js',
       '../store/modules/filter.js',
+      '../store/modules/hlh_commodity.js',
       '../store/modules/layout.js',
       '../store/modules/menu.js',
       '../store/modules/products.js',

@@ -1,15 +1,40 @@
 
-import { getIndexImgs, getHomeTagProds } from '../../pages/service/api'
-import Vue from 'vue'
+import { getIndexImgs, getHomeTagProds, getProdTags, getCategorys } from '../../pages/service/api'
 
 export default {
   namespaced: true,
 
   state: {
     indexImgs: [],// 轮播图
-    tagProdList: [] // 分类商品列表
+    categoryList:[], //分类列表
+    tagProdList: [], // 分类商品列表
+    prodTagsList: [], // 分类标签
   },
   actions: {
+
+    // 获取分类列表
+    async getCategoryList(context, payload) {
+      const { data } = await getCategorys()
+
+      const is_true = !(data && typeof data == 'object' && Array.isArray(data))
+      if (is_true) {
+        return
+      }
+
+      context.commit('save', { categoryList: data });
+    },
+
+    // 获取商品标签
+    async  getProdTagList(context, payload) {
+      const { data } = await getProdTags()
+
+      const is_true = !(data && typeof data == 'object' && Array.isArray(data))
+      if (is_true) {
+        return
+      }
+
+      context.commit('save', { prodTagsList: data });
+    },
 
     // 获取轮播图
     async  getIndexImgList(context, payload) {
@@ -32,6 +57,7 @@ export default {
 
       context.commit('save', { indexImgs });
     },
+
     // 获取首页所有标签商品
     async  getHomeTagProdList(context, payload) {
       console.log('getHomeTagProdList')

@@ -7,7 +7,7 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-3">
-            <productSidebar />
+              <productSidebar />
             </div>
             <div class="col-lg-9 col-sm-12 col-xs-12 productdetail">
               <div class="container-fluid">
@@ -17,15 +17,21 @@
                       <div class="swiper-wrapper">
                         <div
                           class="swiper-slide"
-                          v-for="(product,index) in getDetail.images"
+                          v-for="(prodInfo, index) in prodInfo.pic"
                           :key="index"
                         >
                           <img
+                            :src="'http://img-test.gz-yami.com/' + prodInfo.pic"
+                            :id="prodInfo.shopId"
+                            class="img-fluid bg-img"
+                            :alt="prodInfo.brief"
+                          />
+                          <!--<img
                             :src="getImgUrl(product.src)"
                             :id="product.image_id"
                             class="img-fluid bg-img"
                             :alt="product.alt"
-                          />
+                          />-->
                         </div>
                       </div>
                     </div>
@@ -35,7 +41,7 @@
                           <div class="swiper-wrapper">
                             <div
                               class="swiper-slide"
-                              v-for="(product,index) in getDetail.images"
+                              v-for="(product, index) in getDetail.images"
                               :key="index"
                             >
                               <img
@@ -53,58 +59,80 @@
                   </div>
                   <div class="col-lg-6 rtl-text">
                     <div class="product-right">
-                      <h2>{{ getDetail.title }}</h2>
+                      <h2>{{ prodInfo.prodName }}</h2>
                       <h4 v-if="getDetail.sale">
-                        <del>{{ getDetail.price * curr.curr | currency(curr.symbol) }}</del>
-                        <span>{{ getDetail.discount }}% off</span>
+                        <del>{{
+                          (prodInfo.price * curr.curr) | currency(curr.symbol)
+                        }}</del>
                       </h4>
-                      <h3 v-if="getDetail.sale">{{ discountedPrice(getDetail) * curr.curr | currency(curr.symbol) }}</h3>
-                      <h3 v-else>{{ getDetail.price * curr.curr | currency(curr.symbol) }}</h3>
+                      <h3 v-if="getDetail.sale">
+                        {{
+                          (discountedPrice(getDetail) * curr.curr)
+                            | currency(curr.symbol)
+                        }}
+                      </h3>
+                      <h3 v-else>
+                        {{
+                          (prodInfo.price * curr.curr) | currency(curr.symbol)
+                        }}
+                      </h3>
                       <ul class="color-variant">
                         <li
-                          v-bind:class="{ active: activeColor == variant}"
-                          v-for="(variant,variantIndex) in Color(getDetail.variants)"
+                          v-bind:class="{ active: activeColor == variant }"
+                          v-for="(variant, variantIndex) in Color(
+                            getDetail.variants
+                          )"
                           :key="variantIndex"
                         >
                           <a
                             :class="[variant]"
-                            v-bind:style="{ 'background-color' : variant}"
-                            @click="sizeVariant(getDetail.variants[variantIndex].image_id, variantIndex, variant)"
+                            v-bind:style="{ 'background-color': variant }"
+                            @click="
+                              sizeVariant(
+                                getDetail.variants[variantIndex].image_id,
+                                variantIndex,
+                                variant
+                              )
+                            "
                           ></a>
                         </li>
                       </ul>
-                      <div class="pro_inventory" v-if="getDetail.stock < 8">
-                        <p class="active"> Hurry! We have only {{ getDetail.stock }} product in stock. </p>
-                        <div class="inventory-scroll">
-                          <span style="width: 95%;"></span>
-                        </div>
-                      </div>
                       <div class="product-description border-product">
                         <h6 class="product-title size-text">
                           尺码
                           <span>
-                            <a href="javascript:void(0)" v-b-modal.modal-1>尺寸表</a>
+                            <a href="javascript:void(0)" v-b-modal.modal-1
+                              >尺寸表</a
+                            >
                           </span>
                         </h6>
                         <div class="size-box">
                           <ul>
                             <li
                               class="product-title"
-                              v-bind:class="{ active: selectedSize == size}"
-                              v-for="(size,index) in size"
+                              v-bind:class="{ active: selectedSize == size }"
+                              v-for="(size, index) in size"
                               :key="index"
                             >
                               <a
                                 href="javascript:void(0)"
                                 @click="changeSizeVariant(size)"
-                              >{{size}}</a>
+                                >{{ size }}</a
+                              >
                             </li>
                           </ul>
                         </div>
-                        <h5 class="avalibility" v-if="counter <= getDetail.stock">
+                        <p>库存：{{ prodInfo.totalStocks }}</p>
+                        <h5
+                          class="avalibility"
+                          v-if="counter <= prodInfo.totalStocks"
+                        >
                           <span>有货</span>
                         </h5>
-                        <h5 class="avalibility" v-if="counter > getDetail.stock">
+                        <h5
+                          class="avalibility"
+                          v-if="counter > prodInfo.totalStocks"
+                        >
                           <span>缺货</span>
                         </h5>
                         <h6 class="product-title">数量</h6>
@@ -143,63 +171,30 @@
                         </div>
                       </div>
                       <div class="product-buttons">
-                        <nuxt-link :to="{ path: '/page/account/cart'}">
+                        <nuxt-link :to="{ path: '/page/account/cart' }">
                           <button
                             class="btn btn-solid"
                             title="Add to cart"
                             @click="addToCart(getDetail, counter)"
                             :disabled="counter > getDetail.stock"
-                          >加入购物车</button>
+                          >
+                            加入购物车
+                          </button>
                         </nuxt-link>
                         <button
-                            class="btn btn-solid"
-                            title="buy now"
-                            @click="buyNow(getDetail, counter)"
-                            :disabled="counter > getDetail.stock"
-                          >立即购买</button>
+                          class="btn btn-solid"
+                          title="buy now"
+                          @click="buyNow(getDetail, counter)"
+                          :disabled="counter > getDetail.stock"
+                        >
+                          立即购买
+                        </button>
                       </div>
                       <div class="border-product">
-                        <h6 class="product-title">产品详情</h6>
-                        <p>{{getDetail.description.substring(0,200)+"...."}}</p>
+                        <h6 class="product-title">产品描述</h6>
+                        <p>{{ prodInfo.brief }}</p>
                       </div>
-                      <div class="border-product">
-                        <h6 class="product-title">share it</h6>
-                        <div class="product-icon">
-                          <ul class="product-social">
-                            <li>
-                              <a href="javascript:void(0)">
-                                <i class="fa fa-facebook"></i>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0)">
-                                <i class="fa fa-google-plus"></i>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0)">
-                                <i class="fa fa-twitter"></i>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0)">
-                                <i class="fa fa-instagram"></i>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0)">
-                                <i class="fa fa-rss"></i>
-                              </a>
-                            </li>
-                          </ul>
-                          <form class="d-inline-block">
-                            <button class="wishlist-btn" @click="addToWishlist(product)">
-                              <i class="fa fa-heart"></i>
-                              <span class="title-font">Add To WishList</span>
-                            </button>
-                          </form>
-                        </div>
-                      </div>
+
                       <div class="border-product">
                         <h6 class="product-title">时间提醒</h6>
                         <Timer date="December 20, 2020" />
@@ -213,37 +208,39 @@
                   <div class="col-sm-12 col-lg-12">
                     <b-tabs card>
                       <b-tab title="描述" active>
-                        <b-card-text>{{getDetail.description}}</b-card-text>
+                        <div
+                          class="blog-content"
+                          v-html="prodInfo.content"
+                        ></div>
                       </b-tab>
                       <b-tab title="细节">
                         <b-card-text>
-                          {{getDetail.description}}
                           <div class="single-product-tables">
                             <table>
                               <tbody>
                                 <tr>
                                   <td>品名</td>
-                                  <td>{{getDetail.productName}}</td>
+                                  <td>{{ getDetail.productName }}</td>
                                 </tr>
                                 <tr>
                                   <td>颜色</td>
-                                  <td>{{getDetail.color}}</td>
+                                  <td>{{ getDetail.color }}</td>
                                 </tr>
                                 <tr>
                                   <td>面料材质</td>
-                                  <td>{{getDetail.fabricMaterial}}</td>
+                                  <td>{{ getDetail.fabricMaterial }}</td>
                                 </tr>
                               </tbody>
-                             </table>
+                            </table>
                             <table>
                               <tbody>
                                 <tr>
                                   <td>长度</td>
-                                  <td>{{getDetail.length}}</td>
+                                  <td>123</td>
                                 </tr>
                                 <tr>
                                   <td>尺码</td>
-                                  <td>{{getDetail.size}}</td>
+                                  <td>{{ getDetail.size }}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -321,7 +318,9 @@
                                 ></textarea>
                               </div>
                               <div class="col-md-12">
-                                <button class="btn btn-solid" type="submit">提交您的评论</button>
+                                <button class="btn btn-solid" type="submit">
+                                  提交您的评论
+                                </button>
                               </div>
                             </div>
                           </form>
@@ -337,21 +336,28 @@
       </div>
       <relatedProduct :productTYpe="productTYpe" :productId="productId" />
       <b-modal id="modal-1" size="md" centered hide-footer>
-        <template v-slot:modal-title>{{getDetail.title}}</template>
-        <img src="../../../assets/images/size-chart.jpg" alt="size-chart" class="img-fluid" />
+        <template v-slot:modal-title>{{ getDetail.title }}</template>
+        <img
+          src="../../../assets/images/size-chart.jpg"
+          alt="size-chart"
+          class="img-fluid"
+        />
       </b-modal>
     </section>
     <Footer />
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
-import Header from '../../../components/header/header1'
-import Footer from '../../../components/footer/footer1'
-import Breadcrumbs from '../../../components/widgets/breadcrumbs'
-import Timer from '../../../components/widgets/timer'
-import productSidebar from '../../../components/widgets/product-sidebar'
-import relatedProduct from '../../../components/widgets/related-products'
+import { mapState, mapGetters, createNamespacedHelpers } from "vuex";
+import Header from "../../../components/header/header1";
+import Footer from "../../../components/footer/footer1";
+import Breadcrumbs from "../../../components/widgets/breadcrumbs";
+import Timer from "../../../components/widgets/timer";
+import productSidebar from "../../../components/widgets/product-sidebar";
+import relatedProduct from "../../../components/widgets/related-products";
+
+const { mapActions } = createNamespacedHelpers("hlh_commodity");
+
 export default {
   components: {
     Header,
@@ -359,119 +365,126 @@ export default {
     Breadcrumbs,
     Timer,
     productSidebar,
-    relatedProduct
+    relatedProduct,
   },
   data() {
     return {
       counter: 1,
-      activeColor: '',
-      selectedSize: '',
-      qty: '',
+      activeColor: "",
+      selectedSize: "",
+      qty: "",
       size: [],
-      productTYpe: '',
-      productId: '',
+      productTYpe: "",
+      productId: "",
       swiperOption: {
         slidesPerView: 1,
         spaceBetween: 20,
-        freeMode: true
+        freeMode: true,
       },
       swiperOption1: {
         slidesPerView: 3,
         spaceBetween: 30,
         freeMode: true,
-        centeredSlides: false
-      }
-    }
+        centeredSlides: false,
+      },
+    };
   },
+
   computed: {
     ...mapState({
-      currency: state => state.products.currency
+      currency: (state) => state.products.currency,
+      prodInfo: (state) => state.hlh_commodity.prodInfo,
     }),
     ...mapGetters({
-      curr: 'products/changeCurrency'
+      curr: "products/changeCurrency",
     }),
-    getDetail: function () {
-      return this.$store.getters['products/getProductById'](
+    getDetail: function() {
+      return this.$store.getters["products/getProductById"](
         this.$route.params.id
-      )
+      );
     },
     swiper() {
-      return this.$refs.mySwiper.swiper
-    }
+      return this.$refs.mySwiper.swiper;
+    },
   },
   mounted() {
     // For displaying default color and size on pageload
-    this.uniqColor = this.getDetail.variants[0].color
-    this.sizeVariant(this.getDetail.variants[0].image_id)
+    this.uniqColor = this.getDetail.variants[0].color;
+    this.sizeVariant(this.getDetail.variants[0].image_id);
     // Active default color
-    this.activeColor = this.uniqColor
-    this.changeSizeVariant(this.getDetail.variants[0].size)
+    this.activeColor = this.uniqColor;
+    this.changeSizeVariant(this.getDetail.variants[0].size);
     // related product type
-    this.relatedProducts()
+    this.relatedProducts();
+    this.getProdInfo({
+      prodId: this.$route.params.id,
+    });
   },
   methods: {
-    priceCurrency: function () {
-      this.$store.dispatch('products/changeCurrency')
+    ...mapActions(["getProdInfo"]),
+
+    priceCurrency: function() {
+      this.$store.dispatch("products/changeCurrency");
     },
-    addToWishlist: function (product) {
-      this.$store.dispatch('products/addToWishlist', product)
+    addToWishlist: function(product) {
+      this.$store.dispatch("products/addToWishlist", product);
     },
     discountedPrice(product) {
-      const price = product.price - (product.price * product.discount / 100)
-      return price
+      const price = product.price - (product.price * product.discount) / 100;
+      return price;
     },
     // Related Products display
     relatedProducts() {
-      this.productTYpe = this.getDetail.type
-      this.productId = this.getDetail.id
+      this.productTYpe = this.getDetail.type;
+      this.productId = this.getDetail.id;
     },
     // Display Unique Color
     Color(variants) {
-      const uniqColor = []
+      const uniqColor = [];
       for (let i = 0; i < Object.keys(variants).length; i++) {
         if (uniqColor.indexOf(variants[i].color) === -1) {
-          uniqColor.push(variants[i].color)
+          uniqColor.push(variants[i].color);
         }
       }
-      return uniqColor
+      return uniqColor;
     },
     // add to cart
-    addToCart: function (product, qty) {
-      product.quantity = qty || 1
-      this.$store.dispatch('cart/addToCart', product)
+    addToCart: function(product, qty) {
+      product.quantity = qty || 1;
+      this.$store.dispatch("cart/addToCart", product);
     },
-    buyNow: function (product, qty) {
-      product.quantity = qty || 1
-      this.$store.dispatch('cart/addToCart', product)
-      this.$router.push('/page/account/checkout')
+    buyNow: function(product, qty) {
+      product.quantity = qty || 1;
+      this.$store.dispatch("cart/addToCart", product);
+      this.$router.push("/page/account/checkout");
     },
     // Item Count
     increment() {
-      this.counter++
+      this.counter++;
     },
     decrement() {
-      if (this.counter > 1) this.counter--
+      if (this.counter > 1) this.counter--;
     },
     // Change size variant
     changeSizeVariant(variant) {
-      this.selectedSize = variant
+      this.selectedSize = variant;
     },
     getImgUrl(path) {
-      return require('@/assets/images/' + path)
+      return require("@/assets/images/" + path);
     },
     slideTo(id) {
-      this.swiper.slideTo(id, 1000, false)
+      this.swiper.slideTo(id, 1000, false);
     },
     sizeVariant(id, slideId, color) {
-      this.swiper.slideTo(slideId, 1000, false)
-      this.size = []
-      this.activeColor = color
+      this.swiper.slideTo(slideId, 1000, false);
+      this.size = [];
+      this.activeColor = color;
       this.getDetail.variants.filter((item) => {
         if (id === item.image_id) {
-          this.size.push(item.size)
+          this.size.push(item.size);
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>

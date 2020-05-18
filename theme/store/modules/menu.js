@@ -1,6 +1,6 @@
-// import Menu from '../../data/menu'
+import Menu from '../../data/menu'
 
-import Menu from '../../data/xz_menu'
+// import Menu from '../../data/xz_menu'
 
 const state = {
   data: Menu.data

@@ -1,14 +1,16 @@
 <template>
   <div>
+    <div :id="title"></div>
+    <!-- <nuxt id="title" /> -->
     <div class="title1 section-t-space">
-      <h4>{{subtitle}}</h4>
-      <h2 class="title-inner1">{{title}}</h2>
+      <h4>{{ subtitle }}</h4>
+      <h2 class="title-inner1">{{ title }}</h2>
     </div>
     <div class="container">
       <div class="row">
         <div class="col-lg-6 offset-lg-3">
           <div class="product-para">
-            <p class="text-center">{{description}}</p>
+            <p class="text-center">{{ description }}</p>
           </div>
         </div>
       </div>
@@ -19,7 +21,11 @@
           <div class="col">
             <div v-swiper:mySwiper="swiperOption">
               <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for="(product,index) in products" :key="index">
+                <div
+                  class="swiper-slide"
+                  v-for="(product, index) in products"
+                  :key="index"
+                >
                   <div class="product-box">
                     <productBox1
                       @opencartmodel="showCartModal"
@@ -41,7 +47,7 @@
     <b-alert
       :show="dismissCountDown"
       variant="success"
-      @dismissed="dismissCountDown=0"
+      @dismissed="dismissCountDown = 0"
       @dismiss-count-down="alert"
     >
       <p>Product Is successfully added to your wishlist.</p>
@@ -51,10 +57,12 @@
 
 <script>
 import productBox1 from "../../../../components/product-box/xz_product-box1";
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("xz_home");
 export default {
-  props: ["products",'title',],
+  props: ["products", "title"],
   components: {
-    productBox1
+    productBox1,
   },
   data() {
     return {
@@ -76,20 +84,24 @@ export default {
         breakpoints: {
           1199: {
             slidesPerView: 3,
-            spaceBetween: 20
+            spaceBetween: 20,
           },
           991: {
             slidesPerView: 2,
-            spaceBetween: 20
+            spaceBetween: 20,
           },
           420: {
             slidesPerView: 1,
-            spaceBetween: 20
-          }
-        }
-      }
+            spaceBetween: 20,
+          },
+        },
+      },
     };
   },
+  //   computed: {
+  //   ...mapState(["getProdTagList"])
+  // },
+
   methods: {
     alert(item) {
       this.dismissCountDown = item;
@@ -112,7 +124,7 @@ export default {
       this.showcomapreModal = item;
       this.comapreproduct = productData;
       this.$emit("openCompare", this.showcomapreModal, this.comapreproduct);
-    }
-  }
+    },
+  },
 };
 </script>

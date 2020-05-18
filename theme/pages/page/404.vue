@@ -9,7 +9,7 @@
             <div class="error-section">
               <h1>404</h1>
               <h2>page not found</h2>
-              <nuxt-link :to="{ path: '/shop/fashion'}" class="btn btn-solid">back to home</nuxt-link>
+              <nuxt-link :to="{ path: '/shop/xz_fashion'}" class="btn btn-solid">back to home</nuxt-link>
             </div>
           </div>
         </div>
@@ -19,14 +19,14 @@
   </div>
 </template>
 <script>
-import Header from '../../components/header/header1'
-import Footer from '../../components/footer/footer1'
-import Breadcrumbs from '../../components/widgets/breadcrumbs'
-export default {
-  components: {
-    Header,
-    Footer,
-    Breadcrumbs
+  import Header from '../../components/header/header1'
+  import Footer from '../../components/footer/footer1'
+  import Breadcrumbs from '../../components/widgets/breadcrumbs'
+  export default {
+    components: {
+      Header,
+      Footer,
+      Breadcrumbs
+    }
   }
-}
 </script>

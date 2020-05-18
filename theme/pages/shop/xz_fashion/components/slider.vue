@@ -22,7 +22,7 @@
                           <h1>{{ item.subtitle }}</h1>
                           <h4>{{ item.describetitle }}</h4>
                           <nuxt-link
-                            :to="{ path: '/collection/leftsidebar/all'}"
+                            :to="{ path: '/collection/xz_leftsidebar/all'}"
                             class="btn btn-solid"
                           >立即购买</nuxt-link>
                         </div>
@@ -60,9 +60,6 @@ export default {
   },
   computed: {
     ...mapState(["indexImgs"])
-  },
-  watch: {
-  ...mapState(["indexImgs"])
   },
 
   mounted() {

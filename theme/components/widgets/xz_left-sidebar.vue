@@ -1,5 +1,4 @@
 <template>
-
   <div id="mySidenav" class="sidenav" :class="{ openSide:leftSidebarVal }">
     <a class="sidebar-overlay" @click="closeLeftBar(leftSidebarVal)"></a>
     <nav>
@@ -10,46 +9,50 @@
       </a>
       <!-- Sample menu definition -->
       <ul id="sub-menu" class="sidebar-menu">
-
-        <li>
-          <a href="javascript:void(0)" @click="setActive('bags')">bags
-            <span class="sub-arrow"></span>
-          </a>
-          <ul :class="{ opensub1: isActive('bags') }">
+        <li v-for="(item, index) in categoryList" :key="index">
+          <!-- <a href="javascript:void(0)" @click="setActive(item.title)">{{item.title}} -->
+          <!-- <span class="sub-arrow"></span> -->
+          <!-- </a> -->
+          <nuxt-link :to="{ path: '/collection/xz_leftsidebar/all'}">{{item.categoryName}}</nuxt-link>
+          <!-- <ul :class="{ opensub1: isActive('bags') }">
             <li>
               <a href="#">shopper bags</a>
             </li>
-          </ul>
+          </ul>-->
         </li>
-
       </ul>
     </nav>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("xz_home");
 export default {
-  props: ['leftSidebarVal'],
+  props: ["leftSidebarVal"],
   data() {
     return {
-      activeItem: 'clothing'
-    }
+      activeItem: "clothing"
+    };
+  },
+  computed: {
+    ...mapState(["categoryList"])
   },
   methods: {
     closeLeftBar(val) {
-      val = false
-      this.$emit('closeVal', val)
+      val = false;
+      this.$emit("closeVal", val);
     },
-    isActive: function (menuItem) {
-      return this.activeItem === menuItem
+    isActive: function(menuItem) {
+      return this.activeItem === menuItem;
     },
-    setActive: function (menuItem) {
+    setActive: function(menuItem) {
       if (this.activeItem === menuItem) {
-        this.activeItem = ''
+        this.activeItem = "";
       } else {
-        this.activeItem = menuItem
+        this.activeItem = menuItem;
       }
     }
   }
-}
+};
 </script>

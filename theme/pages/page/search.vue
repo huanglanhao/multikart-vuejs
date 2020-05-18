@@ -12,12 +12,12 @@
                 <form class="form-header">
                   <div class="input-group">
                     <input
-                            type="text"
-                            class="form-control"
-                            v-model="searchString"
-                            v-on:keyup="searchProduct"
-                            placeholder="Search Products....."
-                          >
+                      type="text"
+                      class="form-control"
+                      v-model="searchString"
+                      v-on:keyup="searchProduct"
+                      placeholder="Search Products....."
+                    />
                   </div>
                 </form>
               </div>
@@ -37,11 +37,8 @@
           >
             <div class="product-box">
               {{product.title}}
-                              <productBox1
-                                :product="product"
-                                :index="index"
-                              />
-                            </div>
+              <productBox1 :product="product" :index="index" />
+            </div>
           </div>
         </div>
       </div>
@@ -50,10 +47,10 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import Header from '../../components/header/header1'
-import Footer from '../../components/footer/footer1'
-import Breadcrumbs from '../../components/widgets/breadcrumbs'
+import { mapState } from "vuex";
+import Header from "../../components/header/header1";
+import Footer from "../../components/footer/footer1";
+import Breadcrumbs from "../../components/widgets/breadcrumbs";
 export default {
   components: {
     Header,
@@ -62,8 +59,8 @@ export default {
   },
   data() {
     return {
-      searchString: ''
-    }
+      searchString: ""
+    };
   },
   computed: {
     ...mapState({
@@ -72,8 +69,8 @@ export default {
   },
   methods: {
     searchProduct() {
-      this.$store.dispatch('products/searchProduct', this.searchString)
+      this.$store.dispatch("products/searchProduct", this.searchString);
     }
   }
-}
+};
 </script>
