@@ -9,7 +9,13 @@ const {
   category_list,
   page_prod_list,
   prod_Info,
-  prodComm,
+  prod_comm,
+  lasted_prod_page,
+  more_buy_prod_list,
+  shop_cart,
+  change_item,
+  prod_list_by_tagId,
+  delete_item,
 } = api;
 
 import request from "../utils/request";
@@ -73,9 +79,61 @@ export function getProdInfo(params) {
   });
 }
 
+// 评论
 export function getProdComm() {
   return request({
     method: "get",
-    url: prodComm,
+    url: prod_comm,
+    data: JSON.stringify(params),
+  });
+}
+
+// 新品推荐
+export function getLastedProdPage(params) {
+  return request({
+    method: "get",
+    url: `${lasted_prod_page}?${stringify(params)}`,
+  });
+}
+
+// 每日疯抢
+export function getMoreBuyProdList() {
+  return request({
+    method: "get",
+    url: more_buy_prod_list,
+  });
+}
+
+// 获取用户购物车信息
+export function getShopCartInfo(params) {
+  return request({
+    method: "post",
+    url: shop_cart,
+    data: JSON.stringify(params),
+  });
+}
+
+// 加入购物车
+export function postAddToCart(params) {
+  return request({
+    method: "post",
+    url: change_item,
+    data: JSON.stringify(params),
+  });
+}
+
+export function deleteCartItem(params) {
+  return request({
+    method: "delete",
+    url: delete_item,
+    data: JSON.stringify(params),
+  });
+}
+
+// 通过分组标签获取商品列表
+export function getProdListByTagId(params) {
+  return request({
+    method: "get",
+    url: `${prod_list_by_tagId}?${stringify(params)}`,
   });
 }

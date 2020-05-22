@@ -16,26 +16,13 @@
                 </div>
                 <div class="form-group">
                   <label for="email">邮箱</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    v-model="email"
-                    placeholder="Email"
-                    name="email"
-                    required
-                  />
+                  <input type="email" class="form-control" id="email" v-model="email" placeholder="Email" name="email"
+                    required />
                 </div>
                 <div class="form-group">
                   <label for="password">密码</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    v-model="password"
-                    placeholder="Enter your password"
-                    required
-                  />
+                  <input type="password" class="form-control" id="password" v-model="password"
+                    placeholder="Enter your password" required />
                 </div>
                 <a class="btn-solid btn" href="javascript:void(0)" @click="signUp">登录</a>
 
@@ -58,158 +45,164 @@
   </div>
 </template>
 <script>
-import firebase from "firebase";
-import Header from "../../../components/header/header1";
-import Footer from "../../../components/footer/footer1";
-import Breadcrumbs from "../../../components/widgets/breadcrumbs";
-import Userauth from "./auth/auth";
-import { emailLogin } from "../../service/api";
+  import firebase from "firebase";
+  import Header from "../../../components/header/xz_header1";
+  import Footer from "../../../components/footer/footer1";
+  import Breadcrumbs from "../../../components/widgets/breadcrumbs";
+  import Userauth from "./auth/auth";
+  import {
+    emailLogin
+  } from "../../service/api";
 
-export default {
-  components: {
-    Header,
-    Footer,
-    Breadcrumbs
-  },
-  data() {
-    return {
-      logintitle: "登录",
-      registertitle: "新客户",
-      errors: [],
-      email: "123456789@qq.com",
-      password: "123456"
-    };
-  },
-  methods: {
-    checkForm: function(e) {
-      this.errors = [];
-      if (!this.email) {
-        this.errors.push("Email required.");
-      } else if (!this.validEmail(this.email)) {
-        this.errors.push("Valid email required.");
+  export default {
+    components: {
+      Header,
+      Footer,
+      Breadcrumbs
+    },
+    data() {
+      return {
+        logintitle: "登录",
+        registertitle: "新客户",
+        errors: [],
+        email: "123456789@qq.com",
+        password: "123456"
+      };
+    },
+    methods: {
+      checkForm: function (e) {
+        this.errors = [];
+        if (!this.email) {
+          this.errors.push("Email required.");
+        } else if (!this.validEmail(this.email)) {
+          this.errors.push("Valid email required.");
+        }
+        if (!this.password) {
+          this.errors.push("Password required.");
+        }
+        if (!this.errors.length) return true;
+        e.preventDefault();
+      },
+      validEmail: function (email) {
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+      },
+
+      async signUp() {
+        if (this.email === "" && this.password === "") {
+          this.email = "123456789@qq.com";
+          this.password = "123456";
+        } else {
+          const params = {
+            principal: this.email,
+            credentials: this.password
+          };
+          try {
+            const {
+              data
+            } = await emailLogin(params);
+
+            const is_true = !(
+              data &&
+              typeof data === "object" &&
+              Reflect.has(data, "access_token")
+            );
+            console.log(data, "------emailLogin");
+
+            if (is_true) {
+              this.$toasted.show("登陆失败", {
+                theme: "bubble",
+                position: "bottom-right",
+                type: "error",
+                duration: 2000
+              });
+              return;
+            }
+            Userauth.localLogin(data);
+            this.$router.replace("/shop/xz_fashion");
+            // this.$router.replace("/page/account/checkout");
+          } catch (error) {}
+
+          // 	firebase
+          // 	  .auth()
+          // 	  .signInWithEmailAndPassword(this.email, this.password)
+          // 	  .then(
+          // 	    (result) => {
+          // 	      console.log('成功', result)
+          // 	      Userauth.localLogin(result)
+          // 	      this.$router.replace('/page/account/checkout')
+          // 	    },
+          // 	    (err) => {
+          // 	      console.log('失败')
+          // 	      this.email = '123456789@qq.com'
+          // 	      this.password = '123456'
+          // 	      this.$toasted.show('Oops...' + err.message, {
+          // 	        theme: 'bubble',
+          // 	        position: 'bottom-right',
+          // 	        type: 'error',
+          // 	        duration: 2000
+          // 	      })
+          // 	    }
+          // 	  )
+        }
+      },
+      socialLogin() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then(result => {
+            console.log("Result", result);
+            Userauth.localLogin(result);
+            this.$router.replace("/");
+          })
+          .catch(err => {
+            alert("Oops. " + err.message);
+          });
+      },
+      socialLoginFacebook() {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then(result => {
+            console.log("Result", result);
+            Userauth.localLogin(result);
+            this.$router.replace("/");
+          })
+          .catch(err => {
+            alert("Oops. " + err.message);
+          });
+      },
+      socialLoginTwitter() {
+        const provider = new firebase.auth.TwitterAuthProvider();
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then(result => {
+            console.log("Result", result);
+            Userauth.localLogin(result);
+            this.$router.replace("/");
+          })
+          .catch(err => {
+            alert("Oops. " + err.message);
+          });
+      },
+      socialLoginGit() {
+        const provider = new firebase.auth.GithubAuthProvider();
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then(result => {
+            console.log("Result", result);
+            Userauth.localLogin(result);
+            this.$router.replace("/");
+          })
+          .catch(err => {
+            alert("Oops. " + err.message);
+          });
       }
-      if (!this.password) {
-        this.errors.push("Password required.");
-      }
-      if (!this.errors.length) return true;
-      e.preventDefault();
-    },
-    validEmail: function(email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-    },
-
-    async signUp() {
-      if (this.email === "" && this.password === "") {
-        this.email = "123456789@qq.com";
-        this.password = "123456";
-      } else {
-        const params = {
-          principal: this.email,
-          credentials: this.password
-        };
-        try {
-          const {data} = await emailLogin(params);
-
-          const is_true = !(
-            data &&
-            typeof data === "object" &&
-            Reflect.has(data, "access_token")
-          );
-          console.log(data, "------emailLogin");
-
-          if (is_true) {
-            this.$toasted.show("登陆失败", {
-              theme: "bubble",
-              position: "bottom-right",
-              type: "error",
-              duration: 2000
-            });
-            return;
-          }
-          Userauth.localLogin(data);
-          this.$router.replace("/page/account/checkout");
-        } catch (error) {}
-
-        // 	firebase
-        // 	  .auth()
-        // 	  .signInWithEmailAndPassword(this.email, this.password)
-        // 	  .then(
-        // 	    (result) => {
-        // 	      console.log('成功', result)
-        // 	      Userauth.localLogin(result)
-        // 	      this.$router.replace('/page/account/checkout')
-        // 	    },
-        // 	    (err) => {
-        // 	      console.log('失败')
-        // 	      this.email = '123456789@qq.com'
-        // 	      this.password = '123456'
-        // 	      this.$toasted.show('Oops...' + err.message, {
-        // 	        theme: 'bubble',
-        // 	        position: 'bottom-right',
-        // 	        type: 'error',
-        // 	        duration: 2000
-        // 	      })
-        // 	    }
-        // 	  )
-      }
-    },
-    socialLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(result => {
-          console.log("Result", result);
-          Userauth.localLogin(result);
-          this.$router.replace("/");
-        })
-        .catch(err => {
-          alert("Oops. " + err.message);
-        });
-    },
-    socialLoginFacebook() {
-      const provider = new firebase.auth.FacebookAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(result => {
-          console.log("Result", result);
-          Userauth.localLogin(result);
-          this.$router.replace("/");
-        })
-        .catch(err => {
-          alert("Oops. " + err.message);
-        });
-    },
-    socialLoginTwitter() {
-      const provider = new firebase.auth.TwitterAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(result => {
-          console.log("Result", result);
-          Userauth.localLogin(result);
-          this.$router.replace("/");
-        })
-        .catch(err => {
-          alert("Oops. " + err.message);
-        });
-    },
-    socialLoginGit() {
-      const provider = new firebase.auth.GithubAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(result => {
-          console.log("Result", result);
-          Userauth.localLogin(result);
-          this.$router.replace("/");
-        })
-        .catch(err => {
-          alert("Oops. " + err.message);
-        });
     }
-  }
-};
+  };
 </script>

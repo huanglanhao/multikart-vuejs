@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <!-- <Breadcrumbs :title="getDetail.title" /> -->
+    <Breadcrumbs :title="prodInfo.shopName" />
     <section class="section-b-space">
       <div class="collection-wrapper">
         <div class="container">
@@ -13,10 +13,12 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-lg-6">
+
                     <div v-swiper:mySwiper="swiperOption" ref="mySwiper">
                       <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="(prodInfo, index) in prodInfo.pic" :key="index">
-                          <img :src="'http://img-test.gz-yami.com/' + prodInfo.pic" :id="prodInfo.shopId"
+                        <div class="swiper-slide" v-for="(prodInfo, index) in (prodInfo.imgs || '').split(',')"
+                          :key="index">
+                          <img :src="'http://img-test.gz-yami.com/' + prodInfo" :id="prodInfo.shopId"
                             class="img-fluid bg-img" :alt="prodInfo.brief" />
                           <!--<img
                             :src="getImgUrl(product.src)"
@@ -31,9 +33,10 @@
                       <div class="col-12 slider-nav-images">
                         <div v-swiper:mySwiper1="swiperOption1">
                           <div class="swiper-wrapper">
-                            <div class="swiper-slide" v-for="(product, index) in getDetail.images" :key="index">
-                              <img :src="'http://img-test.gz-yami.com/' + prodInfo.imgs" :id="prodInfo.shopId"
-                                class="img-fluid bg-img" :alt="product.brief" @click="slideTo(index)" />
+                            <div class="swiper-slide" v-for="(item, index) in (prodInfo.imgs || '').split(',')"
+                              :key="index">
+                              <img :src="'http://img-test.gz-yami.com/' + item" :id="prodInfo.shopId"
+                                class="img-fluid bg-img" :alt="prodInfo.brief" @click="slideTo(index)" />
                             </div>
                           </div>
                         </div>
@@ -59,31 +62,20 @@
                           (prodInfo.price * curr.curr) | currency(curr.symbol)
                         }}
                       </h3>
-                      <ul class="color-variant">
-                        <li v-bind:class="{ active: activeColor == variant }" v-for="(variant, variantIndex) in Color(
-                            getDetail.variants
-                          )" :key="variantIndex">
-                          <a :class="[variant]" v-bind:style="{ 'background-color': variant }" @click="
-                              sizeVariant(
-                                getDetail.variants[variantIndex].image_id,
-                                variantIndex,
-                                variant
-                              )
-                            "></a>
-                        </li>
-                      </ul>
+
                       <div class="product-description border-product">
                         <h6 class="product-title size-text">
-                          尺码
+                          版本
                           <span>
-                            <a href="javascript:void(0)" v-b-modal.modal-1>尺寸表</a>
+                            <a href="javascript:void(0)" v-b-modal.modal-1>版本表</a>
                           </span>
                         </h6>
                         <div class="size-box">
-                          <ul>
-                            <li class="product-title" v-bind:class="{ active: selectedSize == size }"
-                              v-for="(size, index) in size" :key="index">
-                              <a href="javascript:void(0)" @click="changeSizeVariant(size)">{{ size }}</a>
+                          <ul style="width: 100%;display: inline-flex;flex-wrap: wrap;">
+                            <li class="product-title" style="width:230px;height:40px;border-radius:10px;margin:10px 0"
+                              v-bind:class="{ active: selectedSize == size }" v-for="(size, index) in prodInfo.skuList"
+                              :key="index">
+                              <a href="javascript:void(0)" @click="changeSizeVariant(size)">{{ size.skuName }}</a>
                             </li>
                           </ul>
                         </div>
@@ -115,16 +107,22 @@
                         </div>
                       </div>
                       <div class="product-buttons">
-                        <nuxt-link :to="{ path: '/page/account/cart' }">
-                          <button class="btn btn-solid" title="Add to cart" @click="addToCart(getDetail, counter)"
-                            :disabled="counter > getDetail.stock">
-                            加入购物车
+                        <!--<nuxt-link :to="{ path: '/page/account/hlh_cart' }">
+                          <button class="btn btn-solid" title="进入购物车">
+                            进入购物车
+                          </button>
+
+                        </nuxt-link>-->
+                        <button class="btn btn-solid" title="加入购物车" @click="newaddToCart(prodInfo, counter)"
+                          :disabled="counter > prodInfo.stock">
+                          加入购物车
+                        </button>
+                        <nuxt-link :to="{ path: '/page/account/hlh_purchase' }">
+                          <button class="btn btn-solid" title="立即购买" @click="buyNow(prodInfo, counter)"
+                            :disabled="counter > prodInfo.stock">
+                            立即购买
                           </button>
                         </nuxt-link>
-                        <button class="btn btn-solid" title="buy now" @click="buyNow(getDetail, counter)"
-                          :disabled="counter > getDetail.stock">
-                          立即购买
-                        </button>
                       </div>
                       <div class="border-product">
                         <h6 class="product-title">产品描述</h6>
@@ -153,30 +151,15 @@
                               <tbody>
                                 <tr>
                                   <td>品名</td>
-                                  <td>{{ getDetail.productName }}</td>
+                                  <td>{{ prodInfo.prodName }}</td>
                                 </tr>
                                 <tr>
-                                  <td>颜色</td>
-                                  <td>{{ getDetail.color }}</td>
-                                </tr>
-                                <tr>
-                                  <td>面料材质</td>
-                                  <td>{{ getDetail.fabricMaterial }}</td>
+                                  <td>描述</td>
+                                  <td>{{ prodInfo.brief }}</td>
                                 </tr>
                               </tbody>
                             </table>
-                            <table>
-                              <tbody>
-                                <tr>
-                                  <td>长度</td>
-                                  <td>123</td>
-                                </tr>
-                                <tr>
-                                  <td>尺码</td>
-                                  <td>{{ getDetail.size }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
+
                           </div>
                         </b-card-text>
                       </b-tab>
@@ -255,16 +238,15 @@
     mapGetters,
     createNamespacedHelpers
   } from "vuex";
-  import Header from "../../../components/header/header1";
-  import Footer from "../../../components/footer/footer1";
+  import Header from "../../../components/header/xz_header1";
+  import Footer from "../../../components/footer/hlh_footer1";
   import Breadcrumbs from "../../../components/widgets/breadcrumbs";
   import Timer from "../../../components/widgets/timer";
-  import productSidebar from "../../../components/widgets/product-sidebar";
+  import productSidebar from "../../../components/widgets/hlh_product-sidebar";
   import relatedProduct from "../../../components/widgets/related-products";
 
-  const {
-    mapActions
-  } = createNamespacedHelpers("hlh_commodity");
+  const c_mapActions = createNamespacedHelpers("hlh_commodity").mapActions;
+  const s_mapActions = createNamespacedHelpers("shopCart").mapActions;
 
   export default {
     components: {
@@ -302,6 +284,7 @@
       ...mapState({
         currency: (state) => state.products.currency,
         prodInfo: (state) => state.hlh_commodity.prodInfo,
+        // addToCart: state => state.shopCart.addToCart
       }),
       ...mapGetters({
         curr: "products/changeCurrency",
@@ -311,14 +294,12 @@
           this.$route.params.id
         );
       },
-      swiper() {
-        return this.$refs.mySwiper.swiper;
-      },
+
     },
     mounted() {
       // For displaying default color and size on pageload
       this.uniqColor = this.getDetail.variants[0].color;
-      this.sizeVariant(this.getDetail.variants[0].image_id);
+      // this.sizeVariant(this.getDetail.variants[0].image_id);
       // Active default color
       this.activeColor = this.uniqColor;
       this.changeSizeVariant(this.getDetail.variants[0].size);
@@ -327,10 +308,12 @@
       this.getProdInfo({
         prodId: this.$route.params.id,
       });
+      this.getMoreBuyProdList();
+      this.prodCommPageByProd()
     },
     methods: {
-      ...mapActions(["getProdInfo"]),
-
+      ...c_mapActions(["getProdInfo", "getMoreBuyProdList", "prodCommPageByProd"]),
+      ...s_mapActions(["addToCart"]),
       priceCurrency: function () {
         this.$store.dispatch("products/changeCurrency");
       },
@@ -357,14 +340,33 @@
         return uniqColor;
       },
       // add to cart
-      addToCart: function (product, qty) {
-        product.quantity = qty || 1;
-        this.$store.dispatch("cart/addToCart", product);
+
+      // 加入购物车
+      newaddToCart: function (prodInfo, qty) {
+        try {
+          console.log('加入购物车')
+          this.addToCart({
+            ...prodInfo,
+            num: qty
+          })
+        } catch (err) {
+          console.log('加入购物车失败')
+        }
       },
+
       buyNow: function (product, qty) {
-        product.quantity = qty || 1;
-        this.$store.dispatch("cart/addToCart", product);
-        this.$router.push("/page/account/checkout");
+        try {
+          console.log('立即购买')
+          // this.addToCart({
+          //   ...prodInfo,
+          //   num: qty
+          // })
+        } catch (err) {
+          console.log('立即购买失败')
+        }
+        // product.quantity = qty || 1;
+        // this.$store.dispatch("cart/addToCart", product);
+        // this.$router.push("/page/account/checkout");
       },
       // Item Count
       increment() {
@@ -380,14 +382,20 @@
       getImgUrl(path) {
         return require("@/assets/images/" + path);
       },
+      swiper() {
+        console.log(this.$refs, ' this.$refs')
+        return this.$refs.mySwiper.swiper;
+      },
+
       slideTo(id) {
-        this.swiper.slideTo(id, 1000, false);
+        this.swiper().slideTo(id, 1000, false);
       },
       sizeVariant(id, slideId, color) {
-        this.swiper.slideTo(slideId, 1000, false);
+        this.swiper().slideTo(slideId, 1000, false);
         this.size = [];
         this.activeColor = color;
-        this.getDetail.variants.filter((item) => {
+        this.prodInfo.imgs.split(',')[1].filter((item) => {
+          console.log(item, 'itemitem')
           if (id === item.image_id) {
             this.size.push(item.size);
           }

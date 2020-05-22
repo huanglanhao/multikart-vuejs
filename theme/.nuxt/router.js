@@ -55,6 +55,10 @@ const _59176b96 = () => interopDefault(import('../pages/page/account/checkout.vu
 const _2fabe281 = () => interopDefault(import('../pages/page/account/contact.vue' /* webpackChunkName: "pages/page/account/contact" */))
 const _3690fe96 = () => interopDefault(import('../pages/page/account/dashboard.vue' /* webpackChunkName: "pages/page/account/dashboard" */))
 const _31eb1348 = () => interopDefault(import('../pages/page/account/forget-password.vue' /* webpackChunkName: "pages/page/account/forget-password" */))
+const _9eea8dec = () => interopDefault(import('../pages/page/account/hlh_cart.vue' /* webpackChunkName: "pages/page/account/hlh_cart" */))
+const _27d05b1a = () => interopDefault(import('../pages/page/account/hlh_dashboard.vue' /* webpackChunkName: "pages/page/account/hlh_dashboard" */))
+const _318d1d2a = () => interopDefault(import('../pages/page/account/hlh_purchase.vue' /* webpackChunkName: "pages/page/account/hlh_purchase" */))
+const _4386202f = () => interopDefault(import('../pages/page/account/hlh_wishlist.vue' /* webpackChunkName: "pages/page/account/hlh_wishlist" */))
 const _6c8f80ec = () => interopDefault(import('../pages/page/account/login.vue' /* webpackChunkName: "pages/page/account/login" */))
 const _f9255dcc = () => interopDefault(import('../pages/page/account/login-firebase.vue' /* webpackChunkName: "pages/page/account/login-firebase" */))
 const _37d35b8a = () => interopDefault(import('../pages/page/account/profile.vue' /* webpackChunkName: "pages/page/account/profile" */))
@@ -443,6 +447,22 @@ export const routerOptions = {
     path: "/page/account/forget-password",
     component: _31eb1348,
     name: "page-account-forget-password"
+  }, {
+    path: "/page/account/hlh_cart",
+    component: _9eea8dec,
+    name: "page-account-hlh_cart"
+  }, {
+    path: "/page/account/hlh_dashboard",
+    component: _27d05b1a,
+    name: "page-account-hlh_dashboard"
+  }, {
+    path: "/page/account/hlh_purchase",
+    component: _318d1d2a,
+    name: "page-account-hlh_purchase"
+  }, {
+    path: "/page/account/hlh_wishlist",
+    component: _4386202f,
+    name: "page-account-hlh_wishlist"
   }, {
     path: "/page/account/login",
     component: _6c8f80ec,

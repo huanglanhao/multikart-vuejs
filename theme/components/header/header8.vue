@@ -114,13 +114,13 @@
                       </div>
                     </li>
                     <li class="onhover-div mobile-cart">
-                      <div>
+                      <nuxt-link :to="{ path: '/page/account/hlh_cart' }">
                         <img :src='"@/assets/images/icon/cart.png"' class="img-fluid" alt />
                         <i class="ti-shopping-cart"></i>
                         <span class="cart_qty_cls">{{cart.length}}</span>
-                      </div>
+                      </nuxt-link>
                       <ul class="show-div shopping-cart" v-if="!cart.length">
-                        <li>Your cart is currently empty.</li>
+                        <li>您的购物车当前为空。</li>
                       </ul>
                       <ul class="show-div shopping-cart" v-if="cart.length">
                         <li v-for="(item,index) in cart" :key="index">

@@ -9,6 +9,7 @@ import layout from "./modules/layout";
 
 import xz_home from "./modules/xz_home";
 import hlh_commodity from "./modules/hlh_commodity";
+import shopCart from "./modules/shopCart";
 Vue.use(Vuex);
 const createStore = () => {
   return new Vuex.Store({
@@ -21,6 +22,7 @@ const createStore = () => {
       layout,
       xz_home,
       hlh_commodity,
+      shopCart,
     },
   });
 };

@@ -4,12 +4,7 @@
       <ul>
         <li class="onhover-div mobile-search">
           <div>
-            <img
-              alt
-              :src='"@/assets/images/icon/layout4/search.png"'
-              @click="openSearch()"
-              class="img-fluid"
-            >
+            <img alt :src='"@/assets/images/icon/layout4/search.png"' @click="openSearch()" class="img-fluid">
             <i class="ti-search" @click="openSearch()"></i>
           </div>
           <div id="search-overlay" class="search-overlay" :class="{ opensearch:search }">
@@ -21,13 +16,8 @@
                     <div class="col-xl-12">
                       <form>
                         <div class="form-group mb-0">
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="searchString"
-                            @keyup="searchProduct"
-                            placeholder="Search a Product"
-                          >
+                          <input type="text" class="form-control" v-model="searchString" @keyup="searchProduct"
+                            placeholder="Search a Product">
                         </div>
                         <button type="submit" class="btn btn-primary">
                           <i class="fa fa-search"></i>
@@ -36,11 +26,11 @@
                       <ul class="search-results" v-if="searchItems.length">
                         <li v-for="(product,index) in searchItems" :key="index" class="product-box">
                           <div class="img-wrapper">
-                            <img
+                            <!--                        <img
                               :src='getImgUrl(product.images[0].src)'
                               class="img-fluid bg-img"
                               :key="index"
-                            />
+                            />-->
                           </div>
                           <div class="product-detail">
                             <nuxt-link :to="{ path: '/product/sidebar/'+product.id}">
@@ -81,19 +71,20 @@
           </div>
         </li>
         <li class="onhover-div mobile-cart">
-          <div>
+          <nuxt-link :to="{ path: '/page/account/hlh_cart' }">
+
             <img alt :src='"@/assets/images/icon/layout4/cart.png"' class="img-fluid">
             <i class="ti-shopping-cart"></i>
             <span class="cart_qty_cls">{{cart.length}}</span>
-          </div>
+          </nuxt-link>
           <ul class="show-div shopping-cart" v-if="!cart.length">
-            <li>Your cart is currently empty.</li>
+            <li>您的购物车当前为空。</li>
           </ul>
           <ul class="show-div shopping-cart" v-if="cart.length">
             <li v-for="(item,index) in cart" :key="index">
               <div class="media">
                 <nuxt-link :to="{ path: '/product/sidebar/'+item.id}">
-                  <img alt class="mr-3" :src='getImgUrl(item.images[0].src)'>
+                  <!--<img alt class="mr-3" :src='getImgUrl(item.images[0].src)'>-->
                 </nuxt-link>
                 <div class="media-body">
                   <nuxt-link :to="{ path: '/product/sidebar/'+item.id}">
@@ -135,45 +126,51 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
-export default {
-  data() {
-    return {
-      currencyChange: {},
-      search: false,
-      searchString: ''
-    }
-  },
-  computed: {
-    ...mapState({
-      searchItems: state => state.products.searchProduct
-    }),
-    ...mapGetters({
-      cart: 'cart/cartItems',
-      cartTotal: 'cart/cartTotalAmount',
-      curr: 'products/changeCurrency'
-    })
-  },
-  methods: {
-    getImgUrl(path) {
-      return require('@/assets/images/' + path)
+  import {
+    mapState,
+    mapGetters
+  } from 'vuex'
+  export default {
+    data() {
+      return {
+        currencyChange: {},
+        search: false,
+        searchString: ''
+      }
     },
-    openSearch() {
-      this.search = true
+    computed: {
+      ...mapState({
+        searchItems: state => state.products.searchProduct
+      }),
+      ...mapGetters({
+        cart: 'cart/cartItems',
+        cartTotal: 'cart/cartTotalAmount',
+        curr: 'products/changeCurrency'
+      })
     },
-    closeSearch() {
-      this.search = false
-    },
-    searchProduct() {
-      this.$store.dispatch('products/searchProduct', this.searchString)
-    },
-    removeCartItem: function (product) {
-      this.$store.dispatch('cart/removeCartItem', product)
-    },
-    updateCurrency: function (currency, currSymbol) {
-      this.currencyChange = { curr: currency, symbol: currSymbol }
-      this.$store.dispatch('products/changeCurrency', this.currencyChange)
+    methods: {
+      getImgUrl(path) {
+        return require('@/assets/images/' + path)
+      },
+      openSearch() {
+        this.search = true
+      },
+      closeSearch() {
+        this.search = false
+      },
+      searchProduct() {
+        this.$store.dispatch('products/searchProduct', this.searchString)
+      },
+      removeCartItem: function (product) {
+        this.$store.dispatch('cart/removeCartItem', product)
+      },
+      updateCurrency: function (currency, currSymbol) {
+        this.currencyChange = {
+          curr: currency,
+          symbol: currSymbol
+        }
+        this.$store.dispatch('products/changeCurrency', this.currencyChange)
+      }
     }
   }
-}
 </script>
