@@ -7,7 +7,9 @@ axios.interceptors.request.use(
     if (localStorage.getItem("token")) {
       config.url.includes("/p/shopCart/info") ||
       config.url.includes("/p/shopCart/changeItem") ||
-      config.url.includes("/p/shopCart/deleteItem")
+      config.url.includes("/p/shopCart/deleteItem") ||
+      config.url.includes("/p/user/collection/prods") ||
+      config.url.includes("/p/user/collection/addOrCancel")
         ? (config.headers.Authorization = `bearer${localStorage.getItem(
             "token"
           )}`)

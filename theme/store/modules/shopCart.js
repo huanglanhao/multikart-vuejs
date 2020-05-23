@@ -39,16 +39,15 @@ export default {
     async addToCart(context, payload) {
       console.log(payload, "加入购物车");
       try {
-        const parent = {
+        const param = {
           basketId: 0,
           count: payload.num,
           prodId: payload.prodId,
           shopId: payload.shopId,
           skuId: payload.skuList[0].skuId,
         };
-        const { data } = await postAddToCart(parent);
-        console.log(data, "加入购物车----data");
-        context.commit("save", { addToCart: data });
+        await postAddToCart(param);
+
         alert("加入购物车成功");
       } catch (err) {
         alert("加入购物车失败");
@@ -57,18 +56,19 @@ export default {
 
     // 删除购物车列表
     async deleteCart({ commit, state }, payload) {
-      console.log(payload, "删除购物车列表");
-      const param = [payload.basketId];
-      let { shopCartInfo } = state;
-      console.log(state.shopCartInfo, "-----shopCartInfo");
-      const { data } = await deleteCartItem(param);
-      shopCartInfo = shopCartInfo.filter(
-        (item) => item.prodId !== payload.prodId
-      );
-      commit("save", {
-        shopCartInfo,
-      });
-      console.log(data, "----------deleteCart");
+      try {
+        const param = [payload.basketId];
+        let { shopCartInfo } = state;
+        await deleteCartItem(param);
+        shopCartInfo = shopCartInfo.filter(
+          (item) => item.prodId !== payload.prodId
+        );
+        commit("save", {
+          shopCartInfo,
+        });
+      } catch (err) {
+        console.log(err, "删除购物车列表失败");
+      }
     },
 
     async plus({ dispatch, commit, state }, payload) {

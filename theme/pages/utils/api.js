@@ -15,4 +15,6 @@ export const api = {
   change_item: "/api/p/shopCart/changeItem", //添加、修改用户购物车物品
   prod_list_by_tagId: "/api/prod/prodListByTagId", //通过分组标签获取商品列表
   delete_item: "/api/p/shopCart/deleteItem", //删除用户购物车物品
+  collection: "/api/p/user/collection/prods", //获取用户收藏商品列表
+  add_orCancel: "/api/p/user/collection/addOrCancel", //添加、取消收藏
 };

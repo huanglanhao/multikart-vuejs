@@ -4,6 +4,8 @@ import {
   getMoreBuyProdList,
   getProdListByTagId,
   getProdComm,
+  getCollection,
+  postAddOrCancel,
 } from "../../pages/service/api";
 
 export default {
@@ -14,6 +16,7 @@ export default {
     records: [],
     moreBuyProdList: [],
     prodListByTagId: {},
+    userCollection: [],
   },
   actions: {
     async getProdInfo(context, payload) {
@@ -58,13 +61,43 @@ export default {
     // 根据商品返回评论分页数据
     async prodCommPageByProd(context, payload) {
       console.log(payload, "根据商品返回评论分页数据");
-      const paramt = {
-        evaluate,
-        prodId,
+      // const paramt = {
+      //   evaluate: null,
+      //   prodId: payload.prodId,
+      //   current: 1,
+      //   size: 10,
+      // };
+      // await getProdComm(paramt);
+    },
+
+    // 获取用户收藏商品列表
+    async getUserCollection(context, payload) {
+      const params = {
         current: 1,
         size: 10,
       };
-      const { data } = await getProdComm(paramt);
+      const { data } = await getCollection(params);
+
+      context.commit("save", { userCollection: data });
+      console.log(data, "获取用户收藏商品列表");
+    },
+
+    // 添加/取消收藏复制
+    async addOrCancel({ commit, state }, payload) {
+      console.log(payload, "-------addOrCancel");
+      try {
+        const { prodId } = payload;
+        let { userCollection } = state;
+
+        await postAddOrCancel(prodId);
+        userCollection = userCollection.filter(
+          (item) => item.prodId !== prodId
+        );
+
+        commit("save", { userCollection });
+      } catch (err) {
+        console.log(err, "收藏/取消失败");
+      }
     },
   },
 

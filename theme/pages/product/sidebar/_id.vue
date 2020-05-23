@@ -1,7 +1,6 @@
 <template>
   <div>
     <Header />
-    <Breadcrumbs :title="prodInfo.shopName" />
     <section class="section-b-space">
       <div class="collection-wrapper">
         <div class="container">
@@ -65,74 +64,75 @@
 
                       <div class="product-description border-product">
                         <h6 class="product-title size-text">
-                          版本
-                          <span>
-                            <a href="javascript:void(0)" v-b-modal.modal-1>版本表</a>
-                          </span>
+                          分类
                         </h6>
                         <div class="size-box">
-                          <ul style="width: 100%;display: inline-flex;flex-wrap: wrap;">
+                          <ul style="width: 100%;display: inline-flex;flex-wrap: wrap; height: 10vw;overflow: auto;">
                             <li class="product-title" style="width:230px;height:40px;border-radius:10px;margin:10px 0"
                               v-bind:class="{ active: selectedSize == size }" v-for="(size, index) in prodInfo.skuList"
                               :key="index">
-                              <a href="javascript:void(0)" @click="changeSizeVariant(size)">{{ size.skuName }}</a>
+                              <a href="javascript:void(0)" @click="changeSizeVariant(size)"
+                                style="font-size: 14px">{{ size.skuName }}</a>
                             </li>
                           </ul>
                         </div>
-                        <p>库存：{{ prodInfo.totalStocks }}</p>
-                        <h5 class="avalibility" v-if="counter <= prodInfo.totalStocks">
-                          <span>有货</span>
-                        </h5>
-                        <h5 class="avalibility" v-if="counter > prodInfo.totalStocks">
-                          <span>缺货</span>
-                        </h5>
-                        <h6 class="product-title">数量</h6>
-                        <div class="qty-box">
-                          <div class="input-group">
-                            <span class="input-group-prepend">
-                              <button type="button" class="btn quantity-left-minus" data-type="minus" data-field
-                                @click="decrement()">
-                                <i class="ti-angle-left"></i>
-                              </button>
-                            </span>
-                            <input type="text" name="quantity" class="form-control input-number"
-                              :disabled="counter > getDetail.stock" v-model="counter" />
-                            <span class="input-group-prepend">
-                              <button type="button" class="btn quantity-right-plus" data-type="plus" data-field
-                                @click="increment()">
-                                <i class="ti-angle-right"></i>
-                              </button>
-                            </span>
+                        <div
+                          style="width: 100%;display: inline-flex;justify-content: space-around;align-items: center;">
+                          <div>
+                            <p>库存：{{ prodInfo.totalStocks }}</p>
+                            <!--<h5 class="avalibility" v-if="counter <= prodInfo.totalStocks">
+                              <span>有货</span>
+                            </h5>
+                            <h5 class="avalibility" v-if="counter > prodInfo.totalStocks">
+                              <span>缺货</span>
+                            </h5>-->
+                          </div>
+                          <div class="qty-box" style="margin-top:0">
+                            <h6 class="product-title" style="margin-right:5px">购买数量:</h6>
+                            <div class="input-group">
+                              <span class="input-group-prepend">
+                                <button type="button" class="btn quantity-left-minus" data-type="minus" data-field
+                                  @click="decrement()" :disabled="counter >= prodInfo.totalStocks">
+                                  <i class="ti-angle-left"></i>
+                                </button>
+                              </span>
+                              <input type="text" name="quantity" class="form-control input-number"
+                                :disabled="counter >  prodInfo.totalStocks" v-model="counter" />
+                              <span class="input-group-prepend">
+                                <button type="button" class="btn quantity-right-plus" data-type="plus" data-field
+                                  @click="increment()">
+                                  <i class="ti-angle-right"></i>
+                                </button>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="product-buttons">
-                        <!--<nuxt-link :to="{ path: '/page/account/hlh_cart' }">
-                          <button class="btn btn-solid" title="进入购物车">
-                            进入购物车
-                          </button>
-
-                        </nuxt-link>-->
                         <button class="btn btn-solid" title="加入购物车" @click="newaddToCart(prodInfo, counter)"
-                          :disabled="counter > prodInfo.stock">
+                          :disabled="prodInfo.totalStocks <= 0">
                           加入购物车
                         </button>
                         <nuxt-link :to="{ path: '/page/account/hlh_purchase' }">
                           <button class="btn btn-solid" title="立即购买" @click="buyNow(prodInfo, counter)"
-                            :disabled="counter > prodInfo.stock">
+                            :disabled="prodInfo.totalStocks == 0">
                             立即购买
                           </button>
                         </nuxt-link>
+                        <button type="button" class="wishlist-btn" @click="addToWishlist(prodInfo)" style="border:0">
+                          <i class="fa fa-heart" style="border:0"></i>
+                          <span class="title-font">收藏</span>
+                        </button>
                       </div>
                       <div class="border-product">
                         <h6 class="product-title">产品描述</h6>
                         <p>{{ prodInfo.brief }}</p>
                       </div>
 
-                      <div class="border-product">
+                      <!--<div class="border-product">
                         <h6 class="product-title">时间提醒</h6>
                         <Timer date="December 20, 2020" />
-                      </div>
+                      </div>-->
                     </div>
                   </div>
                 </div>
@@ -142,25 +142,13 @@
                   <div class="col-sm-12 col-lg-12">
                     <b-tabs card>
                       <b-tab title="描述" active>
-                        <div class="blog-content" v-html="prodInfo.content"></div>
+                        <p>品名: {{ prodInfo.prodName }}</p>
+                        <p>描述: {{ prodInfo.brief }}</p>
+
                       </b-tab>
                       <b-tab title="细节">
                         <b-card-text>
-                          <div class="single-product-tables">
-                            <table>
-                              <tbody>
-                                <tr>
-                                  <td>品名</td>
-                                  <td>{{ prodInfo.prodName }}</td>
-                                </tr>
-                                <tr>
-                                  <td>描述</td>
-                                  <td>{{ prodInfo.brief }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-
-                          </div>
+                          <div class="blog-content" v-html="prodInfo.content" style="overflow: auto;"></div>
                         </b-card-text>
                       </b-tab>
                       <b-tab title="视频">
@@ -312,13 +300,14 @@
       this.prodCommPageByProd()
     },
     methods: {
-      ...c_mapActions(["getProdInfo", "getMoreBuyProdList", "prodCommPageByProd"]),
+      ...c_mapActions(["getProdInfo", "getMoreBuyProdList", "prodCommPageByProd", "addOrCancel"]),
       ...s_mapActions(["addToCart"]),
       priceCurrency: function () {
         this.$store.dispatch("products/changeCurrency");
       },
-      addToWishlist: function (product) {
-        this.$store.dispatch("products/addToWishlist", product);
+      addToWishlist: function (prodInfo) {
+        console.log("收藏")
+        this.addOrCancel(prodInfo)
       },
       discountedPrice(product) {
         const price = product.price - (product.price * product.discount) / 100;

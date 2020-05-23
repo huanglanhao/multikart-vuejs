@@ -16,17 +16,18 @@
                   <th scope="col">优惠金额</th>
                 </tr>
               </thead>
-              <tbody v-for="(item,index) in shopCartInfo" :key="index">
+              <tbody v-for="(item,index) in shopCartInfo" :key="index" style="display: inline-flex; flex-wrap: wrap;">
                 <tr>
-                  <td>
+                  <td style="flex:1">
                     <nuxt-link :to="{ path: '/product/sidebar/'+item.prodId}">
                       <img :src="'http://img-test.gz-yami.com/'+ item.pic" alt />
                     </nuxt-link>
                   </td>
-                  <td>
-                    <nuxt-link :to="{ path: '/product/sidebar/'+item.prodId}">{{item.prodName}}</nuxt-link>
+                  <td style="flex:2">
+                    <nuxt-link :to="{ path: '/product/sidebar/'+item.prodId}">{{item.prodName}}
+                    </nuxt-link>
                     <div class="mobile-cart-content row">
-                      <div class="col-xs-3">
+                      <div>
                         <div class="qty-box">
                           <div class="input-group">
                             <span class="input-group-prepend">
@@ -45,10 +46,10 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-xs-3">
+                      <!--<div class="col-xs-6">
                         <h2 class="td-color">{{ item.price }}</h2>
-                      </div>
-                      <div class="col-xs-3">
+                      </div>-->
+                      <div>
                         <h2 class="td-color">
                           <a href="#" class="icon">
                             <i class="ti-close"></i>
@@ -58,10 +59,10 @@
                     </div>
                   </td>
                   <td>
-                    <h2>{{ item.price }}</h2>
+                    <h2>￥{{ item.price }}</h2>
                   </td>
-                  <td>
-                    <div class="qty-box">
+                  <td class="col-xs-3">
+                    <div class="qty-box" style="width:155px">
                       <div class="input-group">
                         <span class="input-group-prepend">
                           <button type="button" class="btn quantity-left-minus" :disabled="item.prodCount<=1"
@@ -80,13 +81,13 @@
                       </div>
                     </div>
                   </td>
-                  <td>
+                  <td class="col-xs-3">
                     <a class="icon" @click="removeCartItem(item)">
                       <i class="ti-close"></i>
                     </a>
                   </td>
-                  <td>
-                    <h2 class="td-color">￥{{ item.price }}</h2>
+                  <td class="col-xs-3">
+                    <h2 class="td-color">￥{{ item.shareReduce || "0.00"}}</h2>
                   </td>
                 </tr>
               </tbody>
@@ -118,7 +119,7 @@
             <nuxt-link :to="{ path: '/'}" :class="'btn btn-solid'">继续购物</nuxt-link>
           </div>
           <div class="col-6">
-            <nuxt-link :to="{ path: '/page/account/checkout'}" :class="'btn btn-solid'">购买</nuxt-link>
+            <nuxt-link :to="{ path: '/page/account/hlh_purchase'}" :class="'btn btn-solid'">购买</nuxt-link>
           </div>
         </div>
       </div>

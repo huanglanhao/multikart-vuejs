@@ -5,10 +5,10 @@
     <!-- Home slider -->
     <section class="p-0">
       <div class="slide-1 home-slider">
-        <div v-swiper:mySwiper="swiperOption">
+        <div v-swiper:mySwiper="swiperOption" style="width:100%">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(item, index) in indexImgs" :key="index">
-              <div class="home text-center" :class="item.alignclass"
+              <div class="home text-center" :class="item.alignclass" style="width:100%"
                 v-bind:style="{ 'background-image': 'url(http://img-test.gz-yami.com/' + item.imgUrl + ')' }">
                 <div class="container">
                   <div class="row">

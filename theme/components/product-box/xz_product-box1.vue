@@ -5,7 +5,7 @@
         <span class="lable3" v-if="product.new">new</span>
         <span class="lable4" v-if="product.sale">on sale</span>
       </div>
-      <div class="front" style="height:13vw;text-align:center;">
+      <div class="front" style="width:100%;height:25vh;text-align:center;">
         <nuxt-link :to="{ path: '/product/sidebar/'+product.prodId}">
           <img :src="'http://img-test.gz-yami.com/' + product.pic" :id="product.prodId" class="img-fluid bg-img"
             :alt="product.title" :key="index" style="height:100%" />
@@ -14,15 +14,16 @@
     </div>
     <div class="product-detail">
       <nuxt-link :to="{ path: '/product/sidebar/'+product.prodId}">
-        <h6 style="margin: 15px 0 10px 0">{{ product.prodName }}</h6>
+        <h6
+          style="height:50px;line-height: 25px;margin: 15px 0 0px 0;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;">
+          {{ product.prodName }}</h6>
       </nuxt-link>
-      <p>{{ product.brief }}</p>
 
       <h4 v-if="product.oriPrice">
-        {{ product.price }}
+        ￥{{ product.price }}
         <del>{{ product.oriPrice }}</del>
       </h4>
-      <h4 v-else>￥{{ product.price }}</h4>
+      <h4 v-else style="line-height:30px;padding-bottom:20px">￥{{ product.price }}</h4>
 
     </div>
   </div>

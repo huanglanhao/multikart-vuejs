@@ -75,7 +75,7 @@
 
             <img alt :src='"@/assets/images/icon/layout4/cart.png"' class="img-fluid">
             <i class="ti-shopping-cart"></i>
-            <span class="cart_qty_cls">{{cart.length}}</span>
+            <span class="cart_qty_cls">{{shopCartInfo.length}}</span>
           </nuxt-link>
           <ul class="show-div shopping-cart" v-if="!cart.length">
             <li>您的购物车当前为空。</li>
@@ -128,8 +128,12 @@
 <script>
   import {
     mapState,
-    mapGetters
+    mapGetters,
+    createNamespacedHelpers
   } from 'vuex'
+  const {
+    mapActions
+  } = createNamespacedHelpers("shopCart");
   export default {
     data() {
       return {
@@ -140,7 +144,8 @@
     },
     computed: {
       ...mapState({
-        searchItems: state => state.products.searchProduct
+        searchItems: state => state.products.searchProduct,
+        shopCartInfo: state => state.shopCart.shopCartInfo
       }),
       ...mapGetters({
         cart: 'cart/cartItems',
@@ -148,7 +153,11 @@
         curr: 'products/changeCurrency'
       })
     },
+    mounted() {
+      this.getShopCart();
+    },
     methods: {
+      ...mapActions(["getShopCart"]),
       getImgUrl(path) {
         return require('@/assets/images/' + path)
       },

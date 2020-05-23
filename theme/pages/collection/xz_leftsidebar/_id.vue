@@ -1,7 +1,6 @@
 <template>
   <div>
     <Header />
-    <Breadcrumbs title="collection" />
     <section class="section-b-space ratio_asos">
       <div class="collection-wrapper">
         <div class="container">
@@ -19,7 +18,7 @@
                             @click="removeTags(tag)"></i></a>
                       </li>
                       <li class="clear_filter" v-if="allfilters.length > 0"><a href="javascript:void(0)"
-                          class="clear_filter" @click="removeAllTags()">Clear all</a></li>
+                          class="clear_filter" @click="removeAllTags()">全部清除</a></li>
                     </ul>
                     <div class="collection-product-wrapper">
                       <div class="product-top-filter">

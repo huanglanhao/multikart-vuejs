@@ -4,7 +4,7 @@
       <div class="col-xl-12">
         <div class="filter-main-btn mb-2 ml-3">
           <span class="filter-btn btn btn-theme" @click="filter = !filter">
-            <i class="fa fa-filter" aria-hidden="true"></i> filter
+            <i class="fa fa-filter" aria-hidden="true"></i> 分类
           </span>
         </div>
       </div>
@@ -14,11 +14,11 @@
         <div class="collection-mobile-back">
           <span class="filter-back" @click="filter = !filter">
             <i class="fa fa-angle-left" aria-hidden="true"></i>
-            back
+            返回
           </span>
         </div>
         <div class="collection-collapse-block" :class="{ open: openBlock }">
-          <h3 class="collapse-block-title" @click="toggleSidebarBlock()">商品分类</h3>
+          <h3 class="collapse-block-title" @click="toggleSidebarBlock()">商品分类1</h3>
           <div class="collection-collapse-block-content">
             <div class="collection-brand-filter">
               <ul class="category-list">

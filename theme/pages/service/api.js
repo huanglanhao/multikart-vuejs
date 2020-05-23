@@ -16,6 +16,8 @@ const {
   change_item,
   prod_list_by_tagId,
   delete_item,
+  collection,
+  add_orCancel,
 } = api;
 
 import request from "../utils/request";
@@ -135,5 +137,21 @@ export function getProdListByTagId(params) {
   return request({
     method: "get",
     url: `${prod_list_by_tagId}?${stringify(params)}`,
+  });
+}
+
+// 获取用户收藏商品列表
+export function getCollection(params) {
+  return request({
+    method: "get",
+    url: `${collection}?${stringify(params)}`,
+  });
+}
+
+export function postAddOrCancel(params) {
+  return request({
+    method: "post",
+    url: add_orCancel,
+    data: JSON.stringify(params),
   });
 }

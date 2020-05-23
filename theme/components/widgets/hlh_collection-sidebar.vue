@@ -4,7 +4,7 @@
       <div class="col-xl-12">
         <div class="filter-main-btn" @click="filter = !filter">
           <span class="filter-btn btn btn-theme">
-            <i class="fa fa-filter" aria-hidden="true"></i> Filter
+            <i class="fa fa-filter" aria-hidden="true"></i> 分类
           </span>
         </div>
       </div>
@@ -14,7 +14,7 @@
         <!-- brand filter start -->
         <div class="collection-mobile-back">
           <span class="filter-back" @click="filter = !filter">
-            <i class="fa fa-angle-left" aria-hidden="true"></i> back
+            <i class="fa fa-angle-left" aria-hidden="true"></i> 返回
           </span>
         </div>
         <div class="collection-collapse-block" :class="{ open: openBlock }">
